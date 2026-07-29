@@ -170,15 +170,42 @@ p { line-height: 1.5; }
 }
 .anim-wrap .exanim { width: 160px; height: 200px; }
 .exercise-row .exanim { width: 100%; height: 100%; }
+.anim-wrap { padding: 0; overflow: hidden; }
+.anim-wrap .exphoto { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius); }
 
 .exanim .p-part {
   stroke: var(--accent);
   stroke-width: 8;
   stroke-linecap: round;
   fill: var(--accent);
-  transform-box: fill-box;
+  transform-box: view-box;
 }
 .exanim .p-head { stroke-width: 2; }
+
+/* foto animada (crossfade entre posicion inicial/final) */
+.exphoto {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+.exphoto .frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.exphoto .frame0 { animation: photoFrame0 2.6s ease-in-out infinite; }
+.exphoto .frame1 { animation: photoFrame1 2.6s ease-in-out infinite; }
+@keyframes photoFrame0 { 0%, 35% { opacity: 1; } 50%, 85% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes photoFrame1 { 0%, 35% { opacity: 0; } 50%, 85% { opacity: 1; } 100% { opacity: 0; } }
+
+.anim-wrap .exphoto { border-radius: var(--radius); }
+.exercise-row .exphoto { border-radius: 10px; }
 
 /* set/rep inputs */
 .set-row {

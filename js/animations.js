@@ -17,6 +17,20 @@ function buildFigureSVG(animationType) {
   </svg>`;
 }
 
+// Foto animada (crossfade entre posición inicial y final) tomada de una
+// base de ejercicios de dominio público, guardada localmente en media/.
+// Si un ejercicio no tiene foto mapeada, cae de nuevo al muñeco SVG.
+function buildExerciseMedia(item) {
+  if (!item.media) return buildFigureSVG(item.animationType || "core");
+  const base = `media/${item.media}`;
+  const alt = item.name.replace(/"/g, "");
+  return `
+  <div class="exphoto">
+    <img class="frame frame0" src="${base}/0.jpg" alt="${alt}">
+    <img class="frame frame1" src="${base}/1.jpg" alt="">
+  </div>`;
+}
+
 // Lista de categorías válidas (debe coincidir con las keyframes en style.css)
 const ANIMATION_TYPES = [
   "cardio",

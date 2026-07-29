@@ -168,7 +168,7 @@ function renderSession() {
     .map((w) => {
       const checked = !!sess.warmup[w.id];
       return `<div class="exercise-row" data-warm="${w.id}">
-        <div class="mini-anim">${buildFigureSVG(w.animationType)}</div>
+        <div class="mini-anim">${buildExerciseMedia(w)}</div>
         <div class="info">
           <div class="name">${w.name}</div>
           <div class="meta">${w.detail ?? ""}</div>
@@ -186,7 +186,7 @@ function renderSession() {
       const weightLabel = e.hasWeight ? (ex.weight != null ? `${ex.weight} kg · ` : "sin peso registrado · ") : "";
       const repsLabel = e.timeBased ? "por tiempo" : `${e.repMin}-${e.repMax} reps`;
       return `<button class="exercise-row ${done ? "done" : ""}" data-ex="${e.id}">
-        <div class="mini-anim">${buildFigureSVG(e.animationType)}</div>
+        <div class="mini-anim">${buildExerciseMedia(e)}</div>
         <div class="info">
           <div class="name">${e.name}</div>
           <div class="meta">${e.sets}x ${repsLabel} · ${weightLabel}</div>
@@ -351,7 +351,7 @@ function renderExercise(id) {
       <button class="icon-btn" id="btnBack">←</button>
       <h1>${e.name}</h1>
     </div>
-    <div class="anim-wrap">${buildFigureSVG(e.animationType)}</div>
+    <div class="anim-wrap">${buildExerciseMedia(e)}</div>
     <p class="pill">${e.sets}x ${e.timeBased ? "tiempo" : `${e.repMin}-${e.repMax} reps`}${sess.deloadThisSession ? ` · descarga: ${setsCount} series` : ""}</p>
     ${e.note ? `<div class="note-box">📝 ${e.note}</div>` : ""}
     ${

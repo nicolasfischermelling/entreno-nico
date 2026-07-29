@@ -145,3 +145,58 @@ const EXERCISES = [
 function exercisesForDay(day) {
   return EXERCISES.filter((e) => e.day === day).sort((a, b) => a.order - b.order);
 }
+
+// Fotos reales (2 cuadros: posición inicial / final) de free-exercise-db
+// (yuhonas/free-exercise-db, licencia Unlicense / dominio público),
+// guardadas localmente en media/<carpeta>/0.jpg y 1.jpg para que la app
+// funcione 100% offline. La carpeta corresponde al nombre del ejercicio
+// en esa base; varios ejercicios del ciclo comparten la misma foto porque
+// son la misma máquina/movimiento (ej. hip thrust en D1 y D3).
+const MEDIA_MAP = {
+  warm_cardio: "Recumbent_Bike",
+  warm_abs: "Ab_Crunch_Machine",
+  warm_obliques: "Oblique_Crunches",
+  warm_glutes: "Seated_Glute",
+  d1_prensa45: "Leg_Press",
+  d1_hacksquat: "Hack_Squat",
+  d1_extcuad: "Leg_Extensions",
+  d1_curlfemsentado: "Seated_Leg_Curl",
+  d1_hipthrust: "Barbell_Hip_Thrust",
+  d1_gemelo: "Seated_Calf_Raise",
+  d1_core_rueda: "Cable_Crunch",
+  d1_core_plancha: "Plank",
+  d2_pressinclinado: "Incline_Dumbbell_Press",
+  d2_pressplano: "Dumbbell_Bench_Press",
+  d2_flypecho: "Cable_Crossover",
+  d2_presshombro: "Dumbbell_Shoulder_Press",
+  d2_elevlaterales: "Side_Lateral_Raise",
+  d2_exttriceps: "Triceps_Pushdown",
+  d2_curlbicep: "Dumbbell_Bicep_Curl",
+  d2_curlscott: "Preacher_Curl",
+  d2_core_pallof: "Pallof_Press",
+  d2_core_piernas: "Hanging_Leg_Raise",
+  d3_hipthrustbarra: "Barbell_Hip_Thrust",
+  d3_curlfemacostado: "Lying_Leg_Curls",
+  d3_extlumbar: "Hyperextensions_Back_Extensions",
+  d3_prensastance: "Narrow_Stance_Leg_Press",
+  d3_curlfemsentado: "Seated_Leg_Curl",
+  d3_abductor: "Thigh_Abductor",
+  d3_core_mcgill: "Plank",
+  d3_core_hollow: "Plank",
+  d4_jalonpecho: "Wide-Grip_Lat_Pulldown",
+  d4_remosentado: "Seated_Cable_Rows",
+  d4_remopecho: "Dumbbell_Incline_Row",
+  d4_deltoideposterior: "Reverse_Machine_Flyes",
+  d4_facepull: "Face_Pull",
+  d4_curlez: "EZ-Bar_Curl",
+  d4_curlmartillo: "Hammer_Curls",
+  d4_core_rueda: "Barbell_Ab_Rollout",
+  d4_core_plancha: "Plank",
+};
+
+for (const e of EXERCISES) e.media = MEDIA_MAP[e.id] ?? null;
+for (const w of WARMUP.items) w.media = MEDIA_MAP[w.id] ?? null;
+
+function mediaFolders() {
+  return [...new Set(Object.values(MEDIA_MAP))];
+}

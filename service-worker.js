@@ -1,5 +1,5 @@
-const CACHE_NAME = "entreno-nico-v1";
-const CACHE_FILES = [
+const CACHE_NAME = "entreno-nico-v2";
+const APP_SHELL_FILES = [
   "./",
   "./index.html",
   "./manifest.json",
@@ -11,11 +11,40 @@ const CACHE_FILES = [
   "./icons/icon-192.svg",
   "./icons/icon-512.svg",
   "./icons/icon-maskable.svg",
+  "./media/manifest.json",
 ];
+
+// fetch con cache:"reload" para evitar que una respuesta HTTP vieja del
+// propio navegador se cuele en el precache al actualizar de versión.
+async function fetchFresh(url) {
+  return fetch(url, { cache: "reload" });
+}
+
+async function precache(cache, url) {
+  try {
+    const res = await fetchFresh(url);
+    if (res && res.ok) await cache.put(url, res);
+  } catch (err) {
+    console.error("No se pudo precachear:", url, err);
+  }
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_FILES)).then(() => self.skipWaiting())
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      await Promise.all(APP_SHELL_FILES.map((url) => precache(cache, url)));
+      // Fotos de ejercicios: se precachean aparte para que el shell instale
+      // rápido incluso si alguna imagen tarda o falla puntualmente.
+      try {
+        const manifestRes = await fetchFresh("./media/manifest.json");
+        const mediaFiles = await manifestRes.json();
+        await Promise.allSettled(mediaFiles.map((url) => precache(cache, url)));
+      } catch (err) {
+        console.error("No se pudo precachear el media manifest:", err);
+      }
+      self.skipWaiting();
+    })()
   );
 });
 
